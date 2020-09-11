@@ -1,0 +1,590 @@
+[
+    {
+        "id": "1cc51e13.3dd262",
+        "type": "tab",
+        "label": "Lockdown Prediction",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "66659a83.c1c9b4",
+        "type": "comment",
+        "z": "1cc51e13.3dd262",
+        "name": "Twitter Simple Dashboard",
+        "info": "",
+        "x": 210,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "434c42c8.13839c",
+        "type": "function",
+        "z": "1cc51e13.3dd262",
+        "name": "Prepare Data - Line Chart",
+        "func": "var msg1={\n\"series\": [\"TweetsSentiment\", \"AvgSentiment\"],\n\"data\": [\n    ],\n\"labels\": [\"\"]\n}\nvar data1=[];\nvar data2=[];\nmsg.payload.rows.forEach(function(row) {\n    //console.log(new Date(parseInt(row.TIME)));\n    var objTweets = \n    {\"x\": parseInt(row.TIME) , \"y\": parseInt(row.SENTIMENT_SCORE)};\n    data1.push(objTweets);\n    var objAvg = \n    {\"x\": parseInt(row.TIME) , \"y\": parseInt(row.AVG_SENTIMENT)};\n    data2.push(objAvg);\n })\n msg1.data.push(data1);\n// msg1.data.push(data2);\n\nreturn [{payload:[msg1]}];",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 799,
+        "y": 239,
+        "wires": [
+            [
+                "58115c12.b70364"
+            ]
+        ]
+    },
+    {
+        "id": "4d9542d2.2b7adc",
+        "type": "inject",
+        "z": "1cc51e13.3dd262",
+        "name": "Query: Tweets Sentiment vs. time",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 260,
+        "y": 240,
+        "wires": [
+            [
+                "f021d5a8.58f8f8"
+            ]
+        ]
+    },
+    {
+        "id": "5ed1daa0.b2e9b4",
+        "type": "function",
+        "z": "1cc51e13.3dd262",
+        "name": "Prepare Data - Pie",
+        "func": "var m = {};\n/*m.series =[msg.payload[0].SENTIMENT, msg.payload[1].SENTIMENT,msg.payload[2].SENTIMENT];\nm.data = [ [parseInt(msg.payload[0].SCORE)], [parseInt([msg.payload[1].SCORE])],[parseInt([msg.payload[2].SCORE])]];\nm.labels = [\"Twitter Real time Sentiment\"];\n*/\nm.series =[\"Sentiment\"];\nvar datas=[];\nm.labels=[];\nmsg.payload.rows.forEach(function(row) {\ndatas.push(parseInt(row.SCORE));\nm.labels.push(row.sentiment);\n});\nm.data=[datas];\n/*\nvar m={\n    \"series\":[\"X\"],\n    \"data\":[[5,3,6]],\n    \"labels\":[\"Jan\",\"Feb\",\"Mar\"]\n};*/\nreturn {payload:[m],topic:\"sentiment\"};\n\n\n//ex for live data, message streaming input\n/*var m = [\n    {topic:msg.payload.SENTIMENT, payload:parseInt(msg.payload.SCORE)},\n    ];\n return [m];  \n var m = [\n    {topic:msg.payload[0].SENTIMENT, payload:parseInt(msg.payload[0].SCORE)},\n    {topic:msg.payload[1].SENTIMENT, payload:parseInt(msg.payload[1].SCORE)},\n    {topic:msg.payload[2].SENTIMENT, payload:parseInt(msg.payload[2].SCORE)},\n    ];\nreturn [m];*/",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 757,
+        "y": 174,
+        "wires": [
+            [
+                "b1154019.b8cd3"
+            ]
+        ]
+    },
+    {
+        "id": "25fcce6e.4ac282",
+        "type": "inject",
+        "z": "1cc51e13.3dd262",
+        "name": "Query:Tweets Group by sentiment",
+        "topic": "database",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "x": 274,
+        "y": 176,
+        "wires": [
+            [
+                "3d200009.f7f3"
+            ]
+        ]
+    },
+    {
+        "id": "55f2a65e.692b68",
+        "type": "inject",
+        "z": "1cc51e13.3dd262",
+        "name": "Query: TOP Recent Tweets",
+        "topic": "",
+        "payload": "select SUBSTR(tweet,1,34)  as \"tweet\" ,screen_name as \"name\" ,location as \"loc\",sentiment_score as \"score\" ,timestp as \"time\"  from sentiment.tweets  order by timestp desc FETCH FIRST 8 ROWS ONLY ",
+        "payloadType": "str",
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 299,
+        "y": 299,
+        "wires": [
+            [
+                "da264a2e.75cc18"
+            ]
+        ]
+    },
+    {
+        "id": "4939cea.3705f3",
+        "type": "function",
+        "z": "1cc51e13.3dd262",
+        "name": "Prepare Data - Bar",
+        "func": "var m = {};\n\nm.series =[];\nm.data=[];\nm.labels=[];\nvar datatemp=[]; \n//var datatemp2=[]; \nmsg.payload.rows.forEach(function(row) {\n    datatemp.push(parseInt(row.tweets));\n    //datatemp2.push(parseInt(row.score)*10);\n    m.labels.push(row.loc);\n\n});\nm.data.push(datatemp);\n//m.data.push(datatemp2);\nm.series.push(\"#tweets\",\"sentiment\");\n\nreturn {payload:[m],topic:\"sentiment\"};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 816,
+        "y": 426,
+        "wires": [
+            [
+                "209fdf94.16ce3"
+            ]
+        ]
+    },
+    {
+        "id": "da00e316.e9e14",
+        "type": "inject",
+        "z": "1cc51e13.3dd262",
+        "name": "Query:Tweets Per Location",
+        "topic": "database",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 327,
+        "y": 425,
+        "wires": [
+            [
+                "64561e51.64fc5"
+            ]
+        ]
+    },
+    {
+        "id": "5da25107.04e0b",
+        "type": "inject",
+        "z": "1cc51e13.3dd262",
+        "name": "Query: Count * from Tweets",
+        "topic": "database",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 326,
+        "y": 360,
+        "wires": [
+            [
+                "9614db78.908eb8"
+            ]
+        ]
+    },
+    {
+        "id": "e003becf.629a7",
+        "type": "ui_text",
+        "z": "1cc51e13.3dd262",
+        "group": "d8c63c93.8695c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Total # of Stored Tweets:",
+        "format": "{{msg.payload.rows[0].tweets}}",
+        "layout": "row-left",
+        "x": 963,
+        "y": 359,
+        "wires": []
+    },
+    {
+        "id": "b1154019.b8cd3",
+        "type": "ui_chart",
+        "z": "1cc51e13.3dd262",
+        "name": "Twitter Sentiment Pie Chart",
+        "group": "67ffc571.ac0c7c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Twitter Sentiment",
+        "chartType": "pie",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Displaing Tweets Sentiment",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": "",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#a522dd",
+            "#004080",
+            "#ff8040",
+            "#1155bb",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1016,
+        "y": 173,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "58115c12.b70364",
+        "type": "ui_chart",
+        "z": "1cc51e13.3dd262",
+        "name": "Twitter Activity",
+        "group": "cb18eb94.9b9b98",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Twitter Activity",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Loading...",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "12",
+        "removeOlderPoints": "30",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#8080ff",
+            "#ff0080",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1028,
+        "y": 239,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "209fdf94.16ce3",
+        "type": "ui_chart",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "group": "3c03b154.c3718e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "horizontalBar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Tweets & Sentiment per Location",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#ff8040",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1060,
+        "y": 425,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "19254ac4.3ec4c5",
+        "type": "ui_template",
+        "z": "1cc51e13.3dd262",
+        "group": "d8c63c93.8695c",
+        "name": "Top Recent Tweets",
+        "order": 2,
+        "width": 20,
+        "height": 5,
+        "format": "<style>\n            .mycolumn\n            {\n                font-family:    Arial, Helvetica, sans-serif\n                font-size:      25px;\n                font-weight:    bold;\n            }\n            .mydata\n            {\n                font-family:    Arial, Helvetica, sans-serif\n                font-size:      20px;\n                font-weight:    normal;\n                color: grey;\n            }\n</style>\n<div class=mycolumn layout=\"row\" layout-align=\"start center\">\n<span flex=\"35\" >Tweet</span>\n<span flex=\"15\" >Name</span>\n<span flex>Location</span>\n<span flex=\"10\">Sentiment</span>\n<span flex> TimeStamp</span>\n</div>\n<div class=mydata layout=\"row\" layout-align=\"start center\" ng-repeat=\"tweet in msg.payload.rows\">\n<span flex=\"35\">{{tweet.tweet}}</span>\n<span flex=\"15\" >{{tweet.name}}</span>\n<span flex >{{tweet.loc}}</span>\n<span flex=\"10\" >{{tweet.score}}</span>\n<span flex >{{tweet.time}}</span>\n</div>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 955,
+        "y": 299,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3d200009.f7f3",
+        "type": "postgrestor",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "query": " select sentiment_group as sentiment, count(id)  as \"SCORE\" from sentiment.tweets group by sentiment_group",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 547,
+        "y": 175,
+        "wires": [
+            [
+                "5ed1daa0.b2e9b4"
+            ]
+        ]
+    },
+    {
+        "id": "f021d5a8.58f8f8",
+        "type": "postgrestor",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "query": "select a.sentiment_score as \"SENTIMENT_SCORE\", a.timestamp_ms as \"TIME\" , sum(b.sentiment_score)/count(b.id) as \"AVG_SENTIMENT\"  from sentiment.tweets a, sentiment.tweets b group by a.sentiment_score, a.timestamp_ms , a.timestamp_ms  order by a.timestamp_ms desc limit 20",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 550,
+        "y": 240,
+        "wires": [
+            [
+                "434c42c8.13839c"
+            ]
+        ]
+    },
+    {
+        "id": "da264a2e.75cc18",
+        "type": "postgrestor",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "query": "select SUBSTR(tweet,1,34)  as \"tweet\" ,screen_name as \"name\" ,location as \"loc\",sentiment_score as \"score\" ,timestp as \"time\"  from sentiment.tweets  order by timestp desc FETCH FIRST 8 ROWS ONLY ",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 572,
+        "y": 299,
+        "wires": [
+            [
+                "19254ac4.3ec4c5"
+            ]
+        ]
+    },
+    {
+        "id": "9614db78.908eb8",
+        "type": "postgrestor",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "query": "select count(*)  as \"tweets\" from sentiment.tweets",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 586,
+        "y": 359,
+        "wires": [
+            [
+                "e003becf.629a7"
+            ]
+        ]
+    },
+    {
+        "id": "64561e51.64fc5",
+        "type": "postgrestor",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "query": "select location as \"loc\",count(*)  as \"tweets\" ,  avg(sentiment_score) as \"score\" from sentiment.tweets where location not like 'nolocation'  group by location order by count(*) desc FETCH FIRST 10 ROWS ONLY ",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 591,
+        "y": 427,
+        "wires": [
+            [
+                "4939cea.3705f3"
+            ]
+        ]
+    },
+    {
+        "id": "e3213607.7b1808",
+        "type": "function",
+        "z": "1cc51e13.3dd262",
+        "name": "Prepare Data - Line Chart",
+        "func": "var msg1={\n\"series\": [\"AvgSentiment\"],\n\"data\": [\n    ],\n\"labels\": [\"\"]\n}\n//var data1=[];\nvar data2=[];\nmsg.payload.rows.forEach(function(row) {\n    //console.log(new Date(parseInt(row.TIME)));\n    //var objTweets = \n    //{\"x\": parseInt(row.TIME) , \"y\": parseInt(row.SENTIMENT_SCORE)};\n   // data1.push(objTweets);\n    var objAvg = \n    {\"x\": parseInt(row.TIME) , \"y\": parseFloat(row.AVG_SENTIMENT)};\n    data2.push(objAvg);\n })\n //msg1.data.push(data1);\n msg1.data.push(data2);\n\nreturn [{payload:[msg1]}];",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 850,
+        "y": 500,
+        "wires": [
+            [
+                "6ff7d54e.e85b9c"
+            ]
+        ]
+    },
+    {
+        "id": "2bfaae91.7e3f32",
+        "type": "inject",
+        "z": "1cc51e13.3dd262",
+        "name": "Query: Average Tweets Sentiment vs. time",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 341,
+        "y": 501,
+        "wires": [
+            [
+                "207de6c9.c1002a"
+            ]
+        ]
+    },
+    {
+        "id": "6ff7d54e.e85b9c",
+        "type": "ui_chart",
+        "z": "1cc51e13.3dd262",
+        "name": "Twitter Average Sentiment per day",
+        "group": "18684d50.34b143",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Twitter Average Sentiment per day",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "auto",
+        "interpolate": "linear",
+        "nodata": "Loading...",
+        "dot": true,
+        "ymin": "-1",
+        "ymax": "1",
+        "removeOlder": "12",
+        "removeOlderPoints": "30",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#8080ff",
+            "#ff0080",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#fa0000",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1139,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "207de6c9.c1002a",
+        "type": "postgrestor",
+        "z": "1cc51e13.3dd262",
+        "name": "",
+        "query": "select min(timestamp_ms) as \"TIME\",cast(sum(sentiment_score) as float)/cast(count(sentiment_score) as float) as \"AVG_SENTIMENT\" from sentiment.tweets group by dat order by dat\n\n ",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 601,
+        "y": 501,
+        "wires": [
+            [
+                "e3213607.7b1808"
+            ]
+        ]
+    },
+    {
+        "id": "d8c63c93.8695c",
+        "type": "ui_group",
+        "z": "1cc51e13.3dd262",
+        "name": "TOP Recent Tweets",
+        "tab": "59df0c52.741124",
+        "order": 2,
+        "disp": true,
+        "width": "20"
+    },
+    {
+        "id": "67ffc571.ac0c7c",
+        "type": "ui_group",
+        "z": "",
+        "name": "How do Indians feel about the lockdown?",
+        "tab": "59df0c52.741124",
+        "order": 4,
+        "disp": true,
+        "width": 10,
+        "collapse": false
+    },
+    {
+        "id": "cb18eb94.9b9b98",
+        "type": "ui_group",
+        "z": "",
+        "name": "Tweet Activity",
+        "tab": "59df0c52.741124",
+        "order": 3,
+        "disp": true,
+        "width": 20,
+        "collapse": false
+    },
+    {
+        "id": "3c03b154.c3718e",
+        "type": "ui_group",
+        "z": "1cc51e13.3dd262",
+        "name": "Top 10 Tweet Locations",
+        "tab": "59df0c52.741124",
+        "order": 3,
+        "disp": true,
+        "width": 10,
+        "collapse": false
+    },
+    {
+        "id": "ee0e86d.cfff178",
+        "type": "postgresDB",
+        "z": "",
+        "name": "guactqjk@echo.db.elephantsql.com:5432/guactqjk",
+        "host": "echo.db.elephantsql.com",
+        "port": "5432",
+        "database": "guactqjk",
+        "ssl": false,
+        "max": "10",
+        "min": 1,
+        "idle": "1000"
+    },
+    {
+        "id": "18684d50.34b143",
+        "type": "ui_group",
+        "z": "",
+        "name": "Average Sentiment per day",
+        "tab": "59df0c52.741124",
+        "order": 5,
+        "disp": true,
+        "width": 10,
+        "collapse": false
+    },
+    {
+        "id": "59df0c52.741124",
+        "type": "ui_tab",
+        "z": "1cc51e13.3dd262",
+        "name": "Social Media Dashboard with postgrestor",
+        "icon": "dashboard",
+        "order": 9,
+        "disabled": false,
+        "hidden": false
+    }
+]

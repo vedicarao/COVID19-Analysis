@@ -1,0 +1,133 @@
+[
+    {
+        "id": "8a802493.d68c68",
+        "type": "tab",
+        "label": "Storing into Postgrestor",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "833f349f.194f38",
+        "type": "twitter in",
+        "z": "8a802493.d68c68",
+        "twitter": "",
+        "tags": "lockdown",
+        "user": "false",
+        "name": "",
+        "inputs": 0,
+        "x": 230,
+        "y": 240,
+        "wires": [
+            [
+                "731ac303.3de35c"
+            ]
+        ]
+    },
+    {
+        "id": "261e4406.44356c",
+        "type": "function",
+        "z": "8a802493.d68c68",
+        "name": "PrepareForInsert",
+        "func": "try{\n    msg.place=msg.location.place;\n    msg.txtTweet= msg.tweet.text.replace(/'/g, \"''\");\n    } \n    catch(e){\n        msg.place=\"nolocation\";\n        msg.txtTweet= msg.tweet.text.replace(/'/g, \"''\");\n    }\n    \n    return msg;\n/*msg.payload=\"INSERT INTO SENTIMENT.TWEETS(TWEET,SCREEN_NAME,LOCATION,SENTIMENT_SCORE,TIMESTP,TIMESTAMP_MS) VALUES('\"+\ntxtTweet+\"','\"+\nmsg.tweet.user.screen_name+\"','\"+\nplace+\"',\"+\nmsg.sentiment.score+\",\"+\n\"CURRENT TIMESTAMP\"+\",\"+\nmsg.tweet.timestamp_ms+\")\"\nreturn msg*/",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 663.2271728515625,
+        "y": 239,
+        "wires": [
+            [
+                "61733120.629a4",
+                "4682afdf.b71b4"
+            ]
+        ]
+    },
+    {
+        "id": "c88f04db.93bea8",
+        "type": "comment",
+        "z": "8a802493.d68c68",
+        "name": "Twitter Listening & PostgreSQL inserts",
+        "info": "",
+        "x": 299,
+        "y": 193,
+        "wires": []
+    },
+    {
+        "id": "61733120.629a4",
+        "type": "debug",
+        "z": "8a802493.d68c68",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 902,
+        "y": 315,
+        "wires": []
+    },
+    {
+        "id": "731ac303.3de35c",
+        "type": "switch",
+        "z": "8a802493.d68c68",
+        "name": "Setting location to India",
+        "property": "tweet.user.location",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "India",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 210,
+        "y": 440,
+        "wires": [
+            [
+                "3196a761.38c808"
+            ]
+        ]
+    },
+    {
+        "id": "3196a761.38c808",
+        "type": "mlsentiment",
+        "z": "8a802493.d68c68",
+        "name": "",
+        "property": "payload",
+        "lang": "",
+        "x": 420,
+        "y": 340,
+        "wires": [
+            [
+                "261e4406.44356c"
+            ]
+        ]
+    },
+    {
+        "id": "4682afdf.b71b4",
+        "type": "postgrestor",
+        "z": "8a802493.d68c68",
+        "name": "",
+        "query": "INSERT INTO SENTIMENT.TWEETS(TWEET,SCREEN_NAME,LOCATION,SENTIMENT_SCORE,TIMESTP,TIMESTAMP_MS,dat) \nVALUES(\n'{{msg.txtTweet}}',\n'{{msg.tweet.user.screen_name}}',\n'{{msg.place}}',\n'{{msg.sentiment.score}}',\nCURRENT_TIMESTAMP,\n'{{msg.tweet.timestamp_ms}}',\ndate(CURRENT_TIMESTAMP))",
+        "postgresDB": "ee0e86d.cfff178",
+        "output": true,
+        "outputs": 1,
+        "x": 916,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ee0e86d.cfff178",
+        "type": "postgresDB",
+        "z": "",
+        "name": "guactqjk@echo.db.elephantsql.com:5432/guactqjk",
+        "host": "echo.db.elephantsql.com",
+        "port": "5432",
+        "database": "guactqjk",
+        "ssl": false,
+        "max": "10",
+        "min": 1,
+        "idle": "1000"
+    }
+]

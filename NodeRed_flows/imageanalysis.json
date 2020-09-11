@@ -1,0 +1,430 @@
+[
+    {
+        "id": "2d4dfcc1.963874",
+        "type": "tab",
+        "label": "Twitter Image Analysis",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "731c8c38.dc5474",
+        "type": "function",
+        "z": "2d4dfcc1.963874",
+        "name": "Extract Twitter Image URL",
+        "func": "msg.payload = \"\";\nif (typeof msg.tweet.entities.media !== 'undefined') {\n  if (typeof msg.tweet.entities.media[0].media_url !== 'undefined') {\n    msg.payload = msg.tweet.entities.media[0].media_url;\n  }  \n}\n\nif (typeof msg.tweet.extended_tweet !== 'undefined') {\n    if (typeof msg.tweet.extended_tweet.entities !== 'undefined') {\n        if (typeof msg.tweet.extended_tweet.entities.media !== 'undefined') {\n            if (typeof msg.tweet.extended_tweet.entities.media[0].media_url !== 'undefined') {\n                    msg.payload = msg.tweet.entities.media[0].media_url;\n            }\n        }\n    }\n}\n\nif(typeof msg.tweet.retweeted_status !== 'undefined') {\n    if( typeof msg.tweet.retweeted_status.extended_tweet !== 'undefined') {\n        if( typeof msg.tweet.retweeted_status.extended_tweet.entities !== 'undefined') {\n            if( typeof msg.tweet.retweeted_status.extended_tweet.entities.media[0].media_url !== 'undefined') {\n                msg.payload = msg.tweet.retweeted_status.extended_tweet.entities.media[0].media_url;\n            }\n        }\n    }\n}\n\n\nif( msg.payload.length ) {\n    return [ msg, null ];\n} else {\n    return [ null, msg ];\n}",
+        "outputs": "2",
+        "noerr": 0,
+        "x": 380,
+        "y": 260,
+        "wires": [
+            [
+                "3d824e5a.98d762",
+                "7f1622a9.fd64cc",
+                "af271210.11bcd",
+                "2c072dc.f3511d2",
+                "a1fc0246.269e1"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "1746d573.25cdcb",
+        "type": "debug",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "result",
+        "x": 830,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "baf21bbd.95ef98",
+        "type": "debug",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "tweet",
+        "x": 580,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "3c176f24.0bd6c",
+        "type": "function",
+        "z": "2d4dfcc1.963874",
+        "name": "Process Results",
+        "func": "if (typeof msg.result == 'undefined') {\n    return null;\n}\n\n// Text Extraction\nif (typeof msg.result.images[0].text != 'undefined') {\n    var image_text = msg.result.images[0].text;\n    msg.payload = image_text;\n    msg.template = image_text;\n    if( image_text.length >0 ) {\n       msg.template= \"Watson found the words: \"+image_text;\n    }\n    return msg;\n}\n\nvar bestcolor = -1;\nvar colorscore = 0;\nvar c_id = 0;\nvar say = \"\";\nvar item;\n\nfor ( c_id=0; c_id < (msg.result.images[0].classifiers.length); c_id++ ){\n    // find the best color, if any\n    for( i =0; i<(msg.result.images[0].classifiers[c_id].classes.length); i++ ){\n      var object = msg.result.images[0].classifiers[c_id].classes[i].class;\n      if ( object.includes(\"color\") ) {\n        if( msg.result.images[0].classifiers[c_id].classes[i].score > colorscore){\n            bestcolor = i;\n            colorscore = msg.result.images[0].classifiers[c_id].classes[i].score;\n        }\n      }\n    }\n \n    var bestItem = 0;\n    var itemScore = 0;\n    for( i =0; i<(msg.result.images[0].classifiers[c_id].classes.length); i++ ){\n      var object = msg.result.images[0].classifiers[c_id].classes[i].class;\n      if ( !object.includes(\"color\") ) {\n        if( msg.result.images[0].classifiers[c_id].classes[i].score > itemScore){\n//            bestItem = i;\n            bestItem = 0;\n            itemScore =  msg.result.images[0].classifiers[c_id].classes[i].score;\n        }\n      }\n    }\n \n     if( bestcolor != \"-1\") {\n        // found a color\n        item = msg.result.images[0].classifiers[c_id].classes[bestcolor].class + \" \" + msg.result.images[0].classifiers[c_id].classes[bestItem].class;\n        bestcolor = -1;\n    } else {\n       item = msg.result.images[0].classifiers[c_id].classes[bestItem].class;\n    }\n//    say = say + \" Watson's \" + msg.result.images[0].classifiers[c_id].name + \" classifier thinks this picture contains a \" + item +\".\";\n    say = say + \" Watson thinks this picture contains a \" + item +\".\";\n}\nmsg.payload =  say;\n\nvar picInfo = msg.result.images[0].classifiers[0].classes;\nvar arrayLength = picInfo.length;\n\nmsg.template=\"<style>\";\nmsg.template=msg.template+\"table { width: 440px; margin-top: 10px; }\";\nmsg.template=msg.template+\"tr:nth-child(even){background-color: #f2f2f2;}\";\nmsg.template=msg.template+\"th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; width: 10%;}\";\nmsg.template=msg.template+\"</style>\";\n\nmsg.template=msg.template+\"<h2>\"+say+\"</h2><table span=100%><tr><th>Class</th><th>Confidence</th></tr>\";\nfor (var i = 0; i < arrayLength; i++) {\n  msg.template = msg.template + \"<tr><td>\" + picInfo[i].class + \"</td><td>\" + picInfo[i].score + \"</td></tr>\";\n}\nmsg.template = msg.template + \"</table>\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 840,
+        "y": 360,
+        "wires": [
+            [
+                "17bf6523.9ce61b",
+                "a99269b7.9f1e68"
+            ]
+        ]
+    },
+    {
+        "id": "17bf6523.9ce61b",
+        "type": "debug",
+        "z": "2d4dfcc1.963874",
+        "name": "Watson results",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1060,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "7f1622a9.fd64cc",
+        "type": "change",
+        "z": "2d4dfcc1.963874",
+        "name": "Tweet Text",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "tweet.text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 590,
+        "y": 200,
+        "wires": [
+            [
+                "5e6fc3ff.407d4c",
+                "d0c4c340.5366"
+            ]
+        ]
+    },
+    {
+        "id": "68db6801.7b5c18",
+        "type": "delay",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "10",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 300,
+        "y": 80,
+        "wires": [
+            [
+                "731c8c38.dc5474",
+                "baf21bbd.95ef98"
+            ]
+        ]
+    },
+    {
+        "id": "c01c5faf.e2219",
+        "type": "change",
+        "z": "2d4dfcc1.963874",
+        "name": "Sentiment Score",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "sentiment.score",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1030,
+        "y": 160,
+        "wires": [
+            [
+                "5edd2cb0.f94284"
+            ]
+        ]
+    },
+    {
+        "id": "af271210.11bcd",
+        "type": "change",
+        "z": "2d4dfcc1.963874",
+        "name": "Twitter Handle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "tweet.user.screen_name",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 320,
+        "wires": [
+            [
+                "589ee3fb.4be02c"
+            ]
+        ]
+    },
+    {
+        "id": "2c072dc.f3511d2",
+        "type": "function",
+        "z": "2d4dfcc1.963874",
+        "name": "Tweet URL",
+        "func": "msg.payload = \"<a href=\\\"https://twitter.com/\"+msg.tweet.user.screen_name+\"/status/\"+msg.tweet.id_str+\"\\\">Open Tweet</a>\";\nif( typeof msg.payload.retweeted_status != 'undefined') {\n    msg.payload = \"<a href=\\\"https://twitter.com/\"+msg.tweet.retweeted_status.user.screen_name+\"/status/\"+msg.tweet.retweeted_status.id_str+\"\\\">Open Tweet</a>\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 120,
+        "wires": [
+            [
+                "2a8a677e.098af8"
+            ]
+        ]
+    },
+    {
+        "id": "886d9545.83fa98",
+        "type": "link in",
+        "z": "2d4dfcc1.963874",
+        "name": "receive1",
+        "links": [
+            "e52c7c7f.ea2cb"
+        ],
+        "x": 175,
+        "y": 80,
+        "wires": [
+            [
+                "68db6801.7b5c18"
+            ]
+        ]
+    },
+    {
+        "id": "5e6fc3ff.407d4c",
+        "type": "ui_text",
+        "z": "2d4dfcc1.963874",
+        "group": "e84d1e16.bb243",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Tweet Text",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 830,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "589ee3fb.4be02c",
+        "type": "ui_text",
+        "z": "2d4dfcc1.963874",
+        "group": "e84d1e16.bb243",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "User: ",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 810,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "5edd2cb0.f94284",
+        "type": "ui_gauge",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "group": "c747f3eb.3ed54",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Sentiment Score",
+        "label": "",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": 10,
+        "colors": [
+            "#ff0000",
+            "#e6e600",
+            "#008040"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1250,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4fb44694.9f6188",
+        "type": "ui_ui_control",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "x": 820,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3d824e5a.98d762",
+        "type": "ui_template",
+        "z": "2d4dfcc1.963874",
+        "group": "e84d1e16.bb243",
+        "name": "Photo",
+        "order": 3,
+        "width": 9,
+        "height": 9,
+        "format": "<div ng-bind-html></div>\n<img width=\"300\" height=\"300\" alt=\"Twitter Image\" src=\"{{msg.payload}}\"/>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 590,
+        "y": 260,
+        "wires": [
+            [
+                "4fb44694.9f6188"
+            ]
+        ]
+    },
+    {
+        "id": "a99269b7.9f1e68",
+        "type": "ui_template",
+        "z": "2d4dfcc1.963874",
+        "group": "d15a8ab1.3ca448",
+        "name": "Results Table",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<div ng-bind-html=\"msg.template\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 1060,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2a8a677e.098af8",
+        "type": "ui_template",
+        "z": "2d4dfcc1.963874",
+        "group": "e84d1e16.bb243",
+        "name": "Open Tweet",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "format": "<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 830,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a1fc0246.269e1",
+        "type": "visual-recognition-v3",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "vr-service-endpoint": "https://api.us-south.visual-recognition.watson.cloud.ibm.com/instances/4da6a6d6-1c29-4bb0-b90d-bc61968a53ba",
+        "image-feature": "classifyImage",
+        "lang": "en",
+        "x": 600,
+        "y": 380,
+        "wires": [
+            [
+                "3c176f24.0bd6c",
+                "1746d573.25cdcb"
+            ]
+        ]
+    },
+    {
+        "id": "d0c4c340.5366",
+        "type": "mlsentiment",
+        "z": "2d4dfcc1.963874",
+        "name": "",
+        "property": "payload",
+        "lang": "",
+        "x": 790,
+        "y": 160,
+        "wires": [
+            [
+                "c01c5faf.e2219"
+            ]
+        ]
+    },
+    {
+        "id": "e84d1e16.bb243",
+        "type": "ui_group",
+        "z": "2d4dfcc1.963874",
+        "name": "Photo",
+        "tab": "18112c66.fb8664",
+        "order": 1,
+        "disp": true,
+        "width": 9,
+        "collapse": false
+    },
+    {
+        "id": "c747f3eb.3ed54",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sentiment",
+        "tab": "18112c66.fb8664",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "d15a8ab1.3ca448",
+        "type": "ui_group",
+        "z": "",
+        "name": "Results",
+        "tab": "18112c66.fb8664",
+        "order": 2,
+        "disp": true,
+        "width": 12,
+        "collapse": false
+    },
+    {
+        "id": "18112c66.fb8664",
+        "type": "ui_tab",
+        "z": "2d4dfcc1.963874",
+        "name": "Twitter Image Analysis",
+        "icon": "dashboard",
+        "order": 6,
+        "disabled": false,
+        "hidden": false
+    }
+]

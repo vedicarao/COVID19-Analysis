@@ -1,0 +1,150 @@
+[
+    {
+        "id": "141e2302.867eed",
+        "type": "tab",
+        "label": "Main Page",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "205cc9f2.f70026",
+        "type": "http in",
+        "z": "141e2302.867eed",
+        "name": "",
+        "url": "/project",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 300,
+        "y": 300,
+        "wires": [
+            [
+                "f3ff6b7d.f2dde8"
+            ]
+        ]
+    },
+    {
+        "id": "e2fd7fad.9c216",
+        "type": "http response",
+        "z": "141e2302.867eed",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 760,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "c29a1400.b4ec48",
+        "type": "http in",
+        "z": "141e2302.867eed",
+        "name": "",
+        "url": "/stats",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 280,
+        "y": 400,
+        "wires": [
+            [
+                "e1e4ace0.21051"
+            ]
+        ]
+    },
+    {
+        "id": "557bdeea.e3cea",
+        "type": "http response",
+        "z": "141e2302.867eed",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 750,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "3d0d1f56.9c2f9",
+        "type": "http in",
+        "z": "141e2302.867eed",
+        "name": "",
+        "url": "/news",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 280,
+        "y": 460,
+        "wires": [
+            [
+                "4be5d2b4.b0525c"
+            ]
+        ]
+    },
+    {
+        "id": "ace88f89.900b7",
+        "type": "http response",
+        "z": "141e2302.867eed",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 750,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "e1e4ace0.21051",
+        "type": "template",
+        "z": "141e2302.867eed",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Stats-Page</title>\n<!--    <link rel=\"stylesheet\" href=\"statspage.css\">-->\n    <link href=\"https://fonts.googleapis.com/css2?family=Nunito&display=swap\" rel=\"stylesheet\">\n    <style>\n        *{\n    padding: 0px;\n    margin: 0px;\n    box-sizing: border-box;\n    \n}\n\n\n.header-container{\n /*    background-image: url(images/ibmimg3.jpg);*/\n  /*  background-image: url(https://images.unsplash.com/photo-1534484374439-6b8cd79be97c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);*/\n   background-image: url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80);\n    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);\n    width: 100%;\n    height: 100vh;\n    background-size: cover;\n    border-radius: 3%;\n   \n}\n\nbody{\n    font-family: 'Nunito', sans-serif;\n    padding: 30px;\n/*    background-image: linear-gradient( 78.1deg,  rgba(177,14,236,1) 5.5%, rgba(255,19,15,1) 92.8% );*/\n/*    background-color: white;*/\n      background-color: white;\n    }\n\n.heading{\npadding: 20px;\n    position: fixed;\nwidth: 100%;\n    left: 0px;\n}\n.heading h1{\n    color: white;\n    font-size: 4rem;\n    letter-spacing: 2px;\n    text-align: center;\n    font-weight: 50;\n    margin-top: 20%;\n    background-color: rgba(0,0,0,.7); // Tint color\n  background-blend-mode: multiply;\n}\n/*end of heading*/\n\n\n.map1{\n    margin-top:6%; \n}\n\n\n.map2{\n    margin-top: 6%;\n    margin-bottom: 6%;\n}\n        \n        \n        \n        \n        \n        \n    </style>\n</head>\n\n<body>\n   \n       \n     <div class=\"header-container\">\n             <div class=\"heading\">\n              <h1 class=\"gradient\">COVID-19 Statistics</h1> \n           </div>\n\n           <div class=\"subheading\">\n               <h2></h2>\n           </div>\n     </div>   \n      \n       <div class=\"map1\">\n           <iframe  src=\"https://ourworldindata.org/grapher/total-cases-covid-19?tab=map\" loading=\"lazy\" style=\"width: 100%; height: 600px; border: 0px none;\"></iframe>\n       </div>\n        \n      <div class=\"map2\">\n          <iframe src=\"https://ourworldindata.org/grapher/stay-at-home-covid\" loading=\"lazy\" style=\"width: 100%; height: 600px; border: 0px none;\"></iframe>\n          \n      </div>\n      \n       <div class=\"map3\">\n          <iframe src=\"https://ourworldindata.org/grapher/full-list-daily-covid-19-tests-per-thousand\" loading=\"lazy\" style=\"width: 100%; height: 600px; border: 0px none;\"></iframe>\n          \n      </div>",
+        "output": "str",
+        "x": 500,
+        "y": 400,
+        "wires": [
+            [
+                "557bdeea.e3cea"
+            ]
+        ]
+    },
+    {
+        "id": "f3ff6b7d.f2dde8",
+        "type": "template",
+        "z": "141e2302.867eed",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Landing Page</title>\n<!--    <link rel=\"stylesheet\" href=\"stylelandingpage.css\">-->\n    <link href=\"https://fonts.googleapis.com/css2?family=Nunito&display=swap\" rel=\"stylesheet\">\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">\n    <style>\n            *{\n    padding: 0px;\n    margin: 0px;\n    box-sizing: border-box;\n    \n}\n        \n        .box{\n            padding: 30px;\n            background-color: white;\n        }\n\n\n\n\n.header-container{\n/*    background-image: url(images/ibmimg3.jpg);*/\n/*    background-image: url(https://images.unsplash.com/photo-1534484374439-6b8cd79be97c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);*/\n   background-image: url(https://images.unsplash.com/photo-1480694313141-fce5e697ee25?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);\n/*     background-image: url(https://images.unsplash.com/photo-1549605606-2b15d707d5ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);*/\n    width: 100%;\n    height: 70vh;\n    background-size: cover;\n    border-radius: 3%;\n}\n\nbody{\n    font-family: 'Nunito', sans-serif;\n    padding: 30px;\n/*    background-image: linear-gradient( 78.1deg,  rgba(177,14,236,1) 5.5%, rgba(255,19,15,1) 92.8% );*/\n/*    background-color: white;*/\n      background-color: white;\n    \n    }\n\n\n.heading{\npadding: 20px;\n\n}\n.heading h1{\n    color: #f6bed6;\n    font-size: 4rem;\n    letter-spacing: 2px;\n    text-align: center;\n    font-weight: 50;\n    margin-bottom: 20px;\n}\n\n.subheading{\n    padding: 20px;\n    margin: 40px auto;\n    text-align: center;\n    font-size: 2.3rem;\n    letter-spacing: 2px;\n    animation-name: moveInleft;\n    animation-duration: 4s;\n    color: white;\n    \n}\n\n\n\n\n.gradient{\n    background-image: linear-gradient( 78.1deg,  rgba(177,14,236,1) 5.5%, rgba(255,19,15,1) 92.8% );\n    background-size: 100%;\n    -webkit-background-clip: text;\n    -moz-background-clip: text;\n    -webkit-text-fill-color: transparent; \n    -moz-text-fill-color: transparent;\n}\n\n\n@keyframes moveInleft{\n    0%{\n        opacity: 1;\n        transform: translateX(-200px);\n    }\n    \n    80%{\n        opacity: 1;\n        transform: translateX(10px);\n    }\n    \n    100%{\n        opacity: 1;\n        transform: translate(0px);\n    }\n}\n\n/*\n@keyframes moveInright{\n    0%{\n        opacity: 1;\n        transform: translateX(400px);\n    }\n    \n    80%{\n        opacity: 1;\n        transform: translateX(-10px);\n    }\n    \n    100%{\n        opacity: 1;\n        transform: translate(0px);\n    }\n}\n\n*/\n\n\n\n/*end of container heading*/\n\n\n/*strart of tab*/\n        \n        \n\n.container{\n/*    background-image: radial-gradient( circle farthest-corner at 7.1% 15.6%,  rgba(22,160,133,0.7) 0%, rgba(64,240,206,0.7) 100.3% ), url(images/ibmimg3.jpg);*/\n/*background-image: linear-gradient( 171.8deg,  rgba(5,111,146,1) 13.5%, rgba(6,57,84,1) 78.6% );*/\n/*    background-image: radial-gradient( circle farthest-corner at 50.3% 44.5%,  rgba(116,147,179,1) 0%, rgba(62,83,104,1) 100.2% );*/\n/*    background-image: radial-gradient( circle farthest-corner at -3.3% 48%,  rgba(141,146,239,1) 0%, rgba(99,229,254,1) 90% );*/\n/*    background-image: linear-gradient( 109.6deg,  rgba(5,85,84,1) 11.2%, rgba(64,224,208,1) 91.1% );*/\n/*    background-color: #092532;*/\n    min-height: 100%;\n    width: 100%;\n    height: 80vh;\n    text-align: center;\n    margin-top: 30px;\n}\n        \n        .menu h2{\n            padding: 10px;\n           font-size: 1.8rem;\n            color: black;\n            letter-spacing: 2px;\n            border-bottom: 2px solid red;\n        \n        }\n\n\n.tabs-container{\n    display: grid;\n    grid-template-columns: 1fr 1fr 1fr 1fr;\n    justify-items: center;\n    padding: 30px;\n    margin: 20px auto;\n}\n\n\n.flip-card {\n  background-color: transparent;\n  width: 250px;\n  height: 350px;\n  perspective: 1000px; \n  font-weight: 50;\n  margin: 20px auto;\n}\n\n/* This container is needed to position the front and back side */\n.flip-card-inner {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  text-align: center;\n  transition: transform 0.8s;\n  transform-style: preserve-3d;\n}\n\n/* Do an horizontal flip when you move the mouse over the flip box container */\n.flip-card:hover .flip-card-inner {\n  transform: rotateY(180deg);\n}\n\n/* Position the front and back side */\n.flip-card-front, .flip-card-back {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  backface-visibility: hidden;\n}\n\n/* Style the front side (fallback if image is missing) */\n.flip-card-front {\n  \n  color: black;\n}\n\n.visualisation-dashboard{\n    background-image: url(https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);\n  background-size: cover;\n  background-repeat: no-repeat;\n    color: wheat;\n    \n}\n\n.news{\n/*    background-image: url(https://images.unsplash.com/photo-1584359983106-ef9366f27454?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);*/\n    background-image: url(https://images.unsplash.com/photo-1495020689067-958852a7765e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);\n    color: red;\n    background-size: cover;\n}\n\n.stats{\n    background-image: url(https://images.unsplash.com/photo-1584735414166-8c436d5854ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);\n    background-repeat: no-repeat;\n    background-size: cover;\n    color: #c70039;\n}\n\n.chat-bot{\n    \n    background-image: url(https://images.unsplash.com/photo-1574876999803-955c688d6581?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);\n    background-repeat: no-repeat;\n    background-size: cover;\n    color: #f37121;\n    \n}\n\n.flip-card-front h2{\n    margin: 20px auto;\n    padding: 20px;\n    font-size: 2rem;\n}\n\n/* Style the back side */\n.flip-card-back {\n  background-color: #f69e7b;\n  color: white;\n  transform: rotateY(180deg);\n  display: grid;\n  grid-template-rows: 1fr 1fr;\n  \n}\n\n.button-container{\n    width: 90%;\n    white-space: nowrap;\n    overflow-x: auto;\n      \n}\n\n.flip-card-back .button{\n    background-color: white;\n    margin: auto;\n    text-decoration: none;\n    padding: 20px;\n    margin: 20px;\n    position: absolute;\n    bottom: 10%;\n    left: 20%;\n    border-radius: 5%;\n    transform: translateX(5%);\n    font-size: 1.2rem;\n    box-shadow: 0px 0px 2px 0px ;\n}\n\n.button:hover{\n    background-color: #c70039;\n    color: white;\n    transform: scale(1.2);\n}\n\n.button:active{\n    transform: translateY(-2%);\n}\n\n.one{\n    background: #00F260;  /* fallback for old browsers */\nbackground: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */\nbackground: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\n\n.two{\n     background: #ff9966;  /* fallback for old browsers */\nbackground: -webkit-linear-gradient(to right, #ff5e62, #ff9966);  /* Chrome 10-25, Safari 5.1-6 */\nbackground: linear-gradient(to right, #ff5e62, #ff9966); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n\n}\n\n.three{\n    background-image: radial-gradient( circle farthest-corner at -1% 57.5%,  rgba(19,170,82,1) 0%, rgba(0,102,43,1) 90% );\n}\n\n.four{\n    background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(7,121,222,1) 0%, rgba(20,72,140,1) 90% );\n}\n\n.description{\n    width: 90%;\n    margin-top: 20px;\n    font-size: 1.5rem;\n    margin-left: 10px;\n    font: black;\n    \n}\n\n\n/*end of tab*/\n\n\n/*health guidelines start*/\n\n.health-guidelines{\n    margin: 20px;\n    color: black;\n    \n}\n\n.head{\n    text-align: center;\n    margin: 20px auto;\n   \n}\n\n.head h2{\n     border-bottom: 2px solid red;\n     font-size: 1.8rem;\n     letter-spacing: 2px;\n    padding: 20px;\n     margin: 30px auto;\n    color: black;\n    \n}\n\n.health{\n    background-color: ;\n    border-radius: 3%;\n    color: black;\n    margin-top: 20px;\n    padding: 20px;\n}\n\n.youtube{\n    display: grid;\n    grid-template-rows: 1fr 1fr;\n    grid-template-columns: 1fr 1fr;\n    grid-row-gap: 30px;\n    grid-column-gap: 20px;\n    margin: 20px;\n}\n\n/*fixes minor        */\n        \n        .shift4{\n            transform: translateX(-2%);\n        }\n      \n    \n        .shift3{\n            transform: translateX(-3%);\n        }    \n    \n    \n/*    map*/\n        \n        .map-title{\n            margin: 20px auto;\n           \n        }\n        \n        .map-title h2{\n             \n                 border-bottom: 2px solid red;\n                 font-size: 1.8rem;\n                 letter-spacing: 2px;\n                padding: 20px;\n                 margin: 30px auto;\n                color: black;\n        }\n        \n/*map end*/\n        \n        \n/*footer start*/\n    \n.footer{\n    margin-bottom:10px;\n    margin-top: 100px;\n    height:140px;\n    width:500px;\n    background-color:white;\n    font-family:candara;\n    margin-left: 36%;\n\n\n}\n\n\n.footer-heading{\n    color:black;\n    font-size:1.5rem;\n    text-align: center;\n}\n\n.footer-icons{\n    color:grey;\n    padding:3px;\n\n}\n\n.footer-each-icon{\n    padding:5px;\n}\n.footer-text{\n    padding:5px;\n    color:lightslategrey;\n\n}        \n/*footer end        */\n    \n    \n    </style>\n    \n</head>\n\n<body>\n   \n   \n        \n        <div class=\"header-container\">\n             <div class=\"heading\">\n              <h1 class=\"gradient\">COVID-19 SENTIMENT ANALYSIS APP</h1> \n           </div>\n\n           <div class=\"subheading\">\n               <h2>Stay Home, Stay Safe</h2>\n           </div>\n     </div>   \n       \n       \n     <header class=\"container\">  \n      \n       <div class=\"menu\">\n           <h2>Menu</h2>\n       </div>\n       <div class=\"tabs-container\">\n            <div class=\"flip-card\">\n               <div class=\"flip-card-inner\">\n                <div class=\"flip-card-front visualisation-dashboard\">\n                     <h2>Sentiment Visualisation Dashboard</h2>\n                </div>\n                <div class=\"flip-card-back one\">\n                      <div class=\"description\">\n                            <p>What is twitterati saying about the lockdown?</p>\n                     </div>                    \n                    \n                    \n                     <div class=\"button-container\">\n                         <a href=\"/ui\" class=\"button\">Find out</a>\n                     </div>\n                </div>\n              </div>\n            </div>\n            \n            <div class=\"flip-card\">\n               <div class=\"flip-card-inner\">\n                <div class=\"flip-card-front news\">\n                    <h2>News Headlines</h2>\n                </div>\n                <div class=\"flip-card-back two\">\n                      <div class=\"description\">\n                            <p >Read the latest News around to stay updated</p>\n                     </div>\n                     \n                      <div class=\"button-container\">\n                         <a href=\"/news\" class=\"button\">Update</a>\n                     </div>\n                </div>\n              </div>\n            </div>\n            \n            <div class=\"flip-card\">\n               <div class=\"flip-card-inner\">\n                <div class=\"flip-card-front stats\">\n                     <h2>COVID-19 Statistics</h2>\n                </div>\n                <div class=\"flip-card-back three\">\n                     <div class=\"description\">\n                            <p>Check out the latest trend in number of new cases, deaths and recovered in your country.</p>\n                     </div>\n                     \n                     <div class=\"button-container shift3\">\n                         <a href=\"/stats\" class=\"button\">Statistics</a>\n                     </div>\n                      \n                </div>\n              </div>\n            </div>\n            \n            <div class=\"flip-card\">\n               <div class=\"flip-card-inner\">\n                <div class=\"flip-card-front chat-bot\">\n                    <h2>COVID-19 Chatbot</h2>\n                </div>\n                <div class=\"flip-card-back four\">\n                    \n                        <div class=\"description\">\n                            <p>Got questions about the Pandemic?\n                            Our COVID-19 Chat bot is here to answer them</p>\n                        </div>\n                        <div class=\"button-container shift4\">\n                            <a href=\"https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=eu-gb&integrationID=f18b8891-da57-4ece-9bd2-cdff1e65c796&serviceInstanceID=04be2527-a86c-457f-8e5c-774d7b6d7203\" class=\"button chat\">Let's Chat</a> \n                        </div>\n                \n                     \n                      \n                </div>\n              </div>\n            </div>\n           \n       </div>    \n       \n       \n       <!--   Health guidelines start-->\n      <div class=\"health\">\n           <div class=\"health-guidelines\">\n               <div class=\"head\">\n                   <h2>Health Guidelines</h2>\n               </div>\n            </div>\n       \n       \n        <div class=\"youtube\">\n           <div class=\"video\">\n               <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/nctiPO9kivI\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n           </div>\n           \n           <div class=\"video\">\n               <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/1APwq1df6Mw\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n           </div>\n           \n           \n           <div class=\"video\">\n              <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/cIhak7--M8Q\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n           </div>\n           \n           <div class=\"video\">\n               <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/y7e8nM0JAz0\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n           </div>\n       </div>\n      </div> \n        \n     <div class=\"map\">\n        \n        <div class=\"map-title\">\n            <h2>COVID-19 Centres</h2>\n        </div>\n     <div class=\"map-container\">\n         \n         <iframe src=\"https://www.google.com/maps/d/u/0/embed?mid=1pahC9X2y0_YFti4VnhEoE7P9BbQGko32\" width=\"640\" height=\"480\"></iframe>\n            \n         \n     </div>\n         \n         \n     </div>  \n     \n      \n     <div class=\"footer\">\n\n        <div class=\"footer-heading\"><b>TheMinions</b></div>\n    <div class=\"footer-icons\">\n        <i class=\"fa fa-github fa-3x\" aria-hidden=\"true\" style=\"color:black\"></i>&nbsp&nbsp&nbsp&nbsp\n        <i class=\"fa fa-youtube-play fa-3x\" aria-hidden=\"true\" style=\"color:red\"></i>\n\n    <div class=\"footer-text\">\n        Developed by Ahan Bose, Prithwijit Banerjee and Vedica Rao\n    </div>\n    \n    \n</div> \n  \n         </header>\n</body>\n</html>",
+        "output": "str",
+        "x": 520,
+        "y": 300,
+        "wires": [
+            [
+                "e2fd7fad.9c216"
+            ]
+        ]
+    },
+    {
+        "id": "4be5d2b4.b0525c",
+        "type": "template",
+        "z": "141e2302.867eed",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>News</title>\n<!--       <link rel=\"stylesheet\" href=\"news_style.css\">-->\n    <style>\n        *{\n    border: 0px;\n    margin: 0px;\n    box-sizing: border-box;\n}\n\n\nbody{\n    font-family: 'Nunito', sans-serif;\n    padding: 30px;\n/*    background-image: linear-gradient( 78.1deg,  rgba(177,14,236,1) 5.5%, rgba(255,19,15,1) 92.8% );*/\n/*    background-color: white;*/\n      \n    }\n\n.heading{\n\n\n    background-color: #07031a;\n}\n\n\n.title{\n    margin-top: 20px;\n    text-align: center;\n    padding: 20px;\n    font-size: 1.5rem;\n    color: white;\n   \n    \n}\n\n.title h1{\n     font-weight: 50;\n}\n\n.subheading{\n    border-bottom: 2px solid red;\n    color: white;\n    display: inline-block;\n    margin-left: 20px;\n    \n}\n\n.subheading h2{\n    \n    margin-top: 20px;\n    padding: 5px;\n}\n\n.social-media{\n    padding: 10px;\n/*    display: grid;*/\n/*    grid-template-columns: 1fr 1fr 1fr;*/\n/*    grid-template-rows: 1fr 1fr 1fr 1fr;*/\n/*    grid-column-gap: 30px;*/\n/*    grid-row-gap: 15px;*/\n    column-count: 4;\n    column-gap: 5px;\n\n}\n        \n        .tweet{\n            display: inline-block;\n            width: 100%;\n            padding: 10px;\n        }\n\n\n\n    </style>\n</head>\n\n<body>\n  <div class=\"heading\">\n      <div class=\"title\">\n          <h1>News Updates</h1>\n      </div>\n       <div class=\"subheading\">\n          <h2>Catch the latest updates from twitter</h2>\n      </div>\n      \n      <div class=\"social-media\">\n         <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/MoHFW_INDIA?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by MoHFW_INDIA</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/WHO?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\" >Tweets by WHO</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/PMOIndia?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by PMOIndia</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/BBCBreaking?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by BBC</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/the_hindu?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by The Hindu</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/ICMRDELHI?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by ICMR Delhi</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/IRCTCofficial?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by IRCTC India</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/IndianRedCross?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by Red Cross India</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/Uber_India?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by UBER India</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/SerumInstIndia?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by Serum Institute India</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/AAI_Official?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by Airport Authority of India</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n          <div class=\"tweet\">\n            <a class=\"twitter-timeline\" href=\"https://twitter.com/timesofindia?ref_src=twsrc%5Etfw\" data-tweet-limit=\"1\">Tweets by MoHFW_INDIA</a> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n         </div>\n         \n         \n      </div>\n      \n  </div>\n  \n \n        \n     \n        \n</body>\n\n       \n       \n</html>",
+        "output": "str",
+        "x": 500,
+        "y": 460,
+        "wires": [
+            [
+                "ace88f89.900b7"
+            ]
+        ]
+    }
+]

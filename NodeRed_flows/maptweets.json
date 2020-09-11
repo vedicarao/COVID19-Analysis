@@ -1,0 +1,771 @@
+[
+    {
+        "id": "9f687b95.6691c8",
+        "type": "tab",
+        "label": "Map Tweets Org",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6c03f6b2.180c88",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "Create payload for map",
+        "rules": [
+            {
+                "t": "set",
+                "p": "store.text",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.sentiment",
+                "pt": "msg",
+                "to": "sentiment.score",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "store",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.icon",
+                "pt": "msg",
+                "to": "fa-twitter",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 630,
+        "y": 480,
+        "wires": [
+            [
+                "180e646a.6fc70c"
+            ]
+        ]
+    },
+    {
+        "id": "40ce6e15.08e97",
+        "type": "debug",
+        "z": "9f687b95.6691c8",
+        "name": "Payload",
+        "active": false,
+        "console": "false",
+        "complete": "payload",
+        "x": 820,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "180e646a.6fc70c",
+        "type": "switch",
+        "z": "9f687b95.6691c8",
+        "name": "Sentiment color",
+        "property": "payload.sentiment",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "gt",
+                "v": "0",
+                "vt": "str"
+            },
+            {
+                "t": "lt",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 320,
+        "y": 660,
+        "wires": [
+            [
+                "cf16dd2f.dedf8"
+            ],
+            [
+                "8e9aa6b3.764de8"
+            ],
+            [
+                "d14de9a.23f6e18"
+            ]
+        ],
+        "inputLabels": [
+            "sentiment"
+        ],
+        "outputLabels": [
+            "neutral",
+            "postive",
+            ""
+        ]
+    },
+    {
+        "id": "cf16dd2f.dedf8",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "Set to grey",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.iconColor",
+                "pt": "msg",
+                "to": "grey",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 600,
+        "wires": [
+            [
+                "85e7e80d.4dbbd8",
+                "40ce6e15.08e97"
+            ]
+        ]
+    },
+    {
+        "id": "8e9aa6b3.764de8",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "Set to green",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.iconColor",
+                "pt": "msg",
+                "to": "green",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 660,
+        "wires": [
+            [
+                "85e7e80d.4dbbd8",
+                "40ce6e15.08e97"
+            ]
+        ]
+    },
+    {
+        "id": "d14de9a.23f6e18",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "Set to red",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.iconColor",
+                "pt": "msg",
+                "to": "red",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 720,
+        "wires": [
+            [
+                "85e7e80d.4dbbd8",
+                "40ce6e15.08e97"
+            ]
+        ]
+    },
+    {
+        "id": "85e7e80d.4dbbd8",
+        "type": "worldmap",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "lat": "20.5937",
+        "lon": "78.9629",
+        "zoom": "4",
+        "layer": "Esri",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "deg",
+        "path": "",
+        "x": 830,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "cbbfa886.cdf4e8",
+        "type": "function",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "func": "if ( msg.payload === false ) {\n    return null;\n}\n\nif( typeof msg.tweet.text != 'undefined') {\n   return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 200,
+        "wires": [
+            [
+                "c67e3a1e.124698"
+            ]
+        ]
+    },
+    {
+        "id": "4a3e3c09.8278f4",
+        "type": "debug",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "tweet",
+        "targetType": "msg",
+        "x": 300,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2f18507.ddb12b",
+        "type": "function",
+        "z": "9f687b95.6691c8",
+        "name": "Tweet URL",
+        "func": "msg.payload = \"<a href=\\\"https://twitter.com/\"+msg.tweet.user.screen_name+\"/status/\"+msg.tweet.id_str+\"\\\">Open Tweet</a>\";\nif( typeof msg.payload.retweeted_status != 'undefined') {\n    msg.payload = \"<a href=\\\"https://twitter.com/\"+msg.tweet.retweeted_status.user.screen_name+\"/status/\"+msg.tweet.retweeted_status.id_str+\"\\\">Open Tweet</a>\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 400,
+        "wires": [
+            [
+                "e493bd58.d3aca"
+            ]
+        ]
+    },
+    {
+        "id": "e493bd58.d3aca",
+        "type": "ui_template",
+        "z": "9f687b95.6691c8",
+        "group": "425e8b6.cf3c174",
+        "name": "Open Tweet",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "format": "<div ng-bind-html=\"msg.payload\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 610,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e66a9800.2b3c08",
+        "type": "ui_text",
+        "z": "9f687b95.6691c8",
+        "group": "425e8b6.cf3c174",
+        "order": 2,
+        "width": 10,
+        "height": 3,
+        "name": "Tweet Text",
+        "label": "{{msg.store.sender}}",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 470,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "8bd60312.d2781",
+        "type": "ui_gauge",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "group": "425e8b6.cf3c174",
+        "order": 4,
+        "width": 10,
+        "height": 8,
+        "gtype": "gage",
+        "title": "Sentiment",
+        "label": "units",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": 10,
+        "colors": [
+            "#f21f07",
+            "#e6e600",
+            "#00f518"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 870,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "5aa7626e.dcf79c",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "Sentiment Score",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "sentiment.score",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 440,
+        "wires": [
+            [
+                "c7eec72.2f04f38",
+                "8bd60312.d2781"
+            ]
+        ]
+    },
+    {
+        "id": "11be3982.8ca266",
+        "type": "inject",
+        "z": "9f687b95.6691c8",
+        "name": "Map Dashboard",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 140,
+        "y": 40,
+        "wires": [
+            [
+                "e6149f5a.35add",
+                "d82cde.b4d0c32",
+                "616c63e8.1fb86c",
+                "a1e28b81.0c0668"
+            ]
+        ]
+    },
+    {
+        "id": "e6149f5a.35add",
+        "type": "function",
+        "z": "9f687b95.6691c8",
+        "name": "Inject /worldmap",
+        "func": "msg.payload = \"/worldmap\";\nmsg.payload.command = {};\n\nvar u = 'http://{s}.tile.openstreetmap.org/hot/{z}/{x}/{y}.png';\nvar o = JSON.stringify({ maxZoom: 19, attribution: '&copy; OpenStreetMap'});\n\nmsg.payload.command =   {\n                        layer:\"Esri\",\n                        lat:18.44081,\n                        lon:-66.08068,                        \n                        zoom:2,\n                        map: {name:\"Esri\", url:u, opt:o},\n                        };\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 40,
+        "wires": [
+            [
+                "c3239269.4f7b2"
+            ]
+        ]
+    },
+    {
+        "id": "c3239269.4f7b2",
+        "type": "template",
+        "z": "9f687b95.6691c8",
+        "name": "Add Map to Dashboard",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<iframe src={{{payload}}} height=624px width=768px></iframe>",
+        "x": 610,
+        "y": 40,
+        "wires": [
+            [
+                "f7c0a5a5.f7b3c8"
+            ]
+        ]
+    },
+    {
+        "id": "f7c0a5a5.f7b3c8",
+        "type": "ui_template",
+        "z": "9f687b95.6691c8",
+        "group": "21da92de.6db59e",
+        "name": "Embedded Map",
+        "order": 1,
+        "width": 16,
+        "height": 13,
+        "format": "<div ng-bind-html=\"msg.payload | trusted\"></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 860,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c7eec72.2f04f38",
+        "type": "debug",
+        "z": "9f687b95.6691c8",
+        "name": "Sentiment Score",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 890,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "c4ecd07e.e0dc1",
+        "type": "ui_switch",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "label": "Enable / Disable",
+        "tooltip": "",
+        "group": "425e8b6.cf3c174",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "cbbfa886.cdf4e8"
+            ]
+        ]
+    },
+    {
+        "id": "c67e3a1e.124698",
+        "type": "switch",
+        "z": "9f687b95.6691c8",
+        "name": "Setting location to India",
+        "property": "tweet.user.location",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "India",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 510,
+        "y": 200,
+        "wires": [
+            [
+                "5277aca2.7817c4"
+            ]
+        ]
+    },
+    {
+        "id": "5277aca2.7817c4",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "MapBox AccessToken",
+        "rules": [
+            {
+                "t": "set",
+                "p": "accesstoken",
+                "pt": "msg",
+                "to": "pk.eyJ1IjoicGoxIiwiYSI6ImNrY2lycnZ2MjFlcjEycm5udW9uN2g3bjAifQ.AthGgl3s_nahm5IgMaF8mw",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 200,
+        "wires": [
+            [
+                "6c1d67f0.bd5948"
+            ]
+        ]
+    },
+    {
+        "id": "6c1d67f0.bd5948",
+        "type": "http request",
+        "z": "9f687b95.6691c8",
+        "name": "MapBox HTTP Request",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/{{{tweet.user.location}}}.json?access_token={{accesstoken}}&limit=1",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 990,
+        "y": 200,
+        "wires": [
+            [
+                "fc765b84.3ca998"
+            ]
+        ]
+    },
+    {
+        "id": "fc765b84.3ca998",
+        "type": "json",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1190,
+        "y": 200,
+        "wires": [
+            [
+                "92749404.ad4c58"
+            ]
+        ]
+    },
+    {
+        "id": "92749404.ad4c58",
+        "type": "change",
+        "z": "9f687b95.6691c8",
+        "name": "Payload for sentiment",
+        "rules": [
+            {
+                "t": "set",
+                "p": "store.lat",
+                "pt": "msg",
+                "to": "payload.features[0].geometry.coordinates[1]",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.lon",
+                "pt": "msg",
+                "to": "payload.features[0].geometry.coordinates[0]",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.place",
+                "pt": "msg",
+                "to": "location.place",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.name",
+                "pt": "msg",
+                "to": "tweet.id_str",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "tweet.text",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.sender",
+                "pt": "msg",
+                "to": "tweet.user.screen_name",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.photoUrl",
+                "pt": "msg",
+                "to": "tweet.user.profile_image_url",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "store.command.zoom",
+                "pt": "msg",
+                "to": "4",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 460,
+        "wires": [
+            [
+                "2f18507.ddb12b",
+                "e66a9800.2b3c08",
+                "51670bb9.5c4104"
+            ]
+        ]
+    },
+    {
+        "id": "d82cde.b4d0c32",
+        "type": "ui_text",
+        "z": "9f687b95.6691c8",
+        "group": "f296204b.61642",
+        "order": 1,
+        "width": 4,
+        "height": 1,
+        "name": "",
+        "label": "Positive",
+        "format": "<img src=\"data:image/png;base64,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\" width=\"40\" height=\"40\">",
+        "layout": "row-spread",
+        "x": 1140,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "616c63e8.1fb86c",
+        "type": "ui_text",
+        "z": "9f687b95.6691c8",
+        "group": "f296204b.61642",
+        "order": 2,
+        "width": 4,
+        "height": 1,
+        "name": "",
+        "label": "Negative",
+        "format": "<img src=\"data:image/png;base64,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\" width=\"40\" height=\"40\">",
+        "layout": "row-spread",
+        "x": 1140,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a1e28b81.0c0668",
+        "type": "ui_text",
+        "z": "9f687b95.6691c8",
+        "group": "f296204b.61642",
+        "order": 3,
+        "width": 4,
+        "height": 1,
+        "name": "",
+        "label": "Neutral",
+        "format": "<img src=\"data:image/png;base64,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\" width=\"40\" height=\"40\">",
+        "layout": "row-spread",
+        "x": 1140,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "76dd3d6d.308d84",
+        "type": "link in",
+        "z": "9f687b95.6691c8",
+        "name": "recieveo",
+        "links": [
+            "e52c7c7f.ea2cb"
+        ],
+        "x": 155,
+        "y": 100,
+        "wires": [
+            [
+                "4a3e3c09.8278f4",
+                "c4ecd07e.e0dc1"
+            ]
+        ]
+    },
+    {
+        "id": "51670bb9.5c4104",
+        "type": "mlsentiment",
+        "z": "9f687b95.6691c8",
+        "name": "",
+        "property": "payload",
+        "lang": "",
+        "x": 410,
+        "y": 460,
+        "wires": [
+            [
+                "5aa7626e.dcf79c",
+                "6c03f6b2.180c88"
+            ]
+        ]
+    },
+    {
+        "id": "425e8b6.cf3c174",
+        "type": "ui_group",
+        "z": "",
+        "name": "Global Tweets",
+        "tab": "3942a43a.42569c",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "21da92de.6db59e",
+        "type": "ui_group",
+        "z": "",
+        "name": "Global Tweet Map",
+        "tab": "3942a43a.42569c",
+        "order": 2,
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "f296204b.61642",
+        "type": "ui_group",
+        "z": "",
+        "name": "Legend",
+        "tab": "3942a43a.42569c",
+        "order": 3,
+        "disp": true,
+        "width": 4,
+        "collapse": false
+    },
+    {
+        "id": "3942a43a.42569c",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Tweet Map",
+        "icon": "dashboard",
+        "order": 5
+    }
+]

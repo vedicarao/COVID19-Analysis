@@ -1,0 +1,423 @@
+[
+    {
+        "id": "9b214a6.d858bb8",
+        "type": "tab",
+        "label": "Tweet Dashboard",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c365dbe0.209738",
+        "type": "debug",
+        "z": "9b214a6.d858bb8",
+        "name": "msg.sentiment.score",
+        "active": false,
+        "console": "false",
+        "complete": "sentiment.score",
+        "x": 620,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e8869147.356e4",
+        "type": "debug",
+        "z": "9b214a6.d858bb8",
+        "name": "msg.tweet details",
+        "active": false,
+        "console": "false",
+        "complete": "tweet",
+        "x": 490,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "890f1d46.4f75",
+        "type": "function",
+        "z": "9b214a6.d858bb8",
+        "name": "Remove URLS and replace #",
+        "func": "var tweet = msg.tweet.text;\nvar newtweet = tweet.replace(/#/g, \" Hash tag \");\n\n\nmsg.payload = newtweet.replace( /(([a-z]+:\\/\\/)?(([a-z0-9\\-]+\\.)+([a-z]{2}|biz|com|co|edu|gov|info|net|org|ly))(:[0-9]{1,5})?(\\/[a-z0-9_\\-\\.~]+)*(\\/([a-z0-9_\\-\\.]*)(\\?[a-z0-9+_\\-\\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\\s+|$)/gi, \"see short URL \" );\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 140,
+        "wires": [
+            [
+                "5df55a5b.6873b4",
+                "e52c7c7f.ea2cb"
+            ]
+        ]
+    },
+    {
+        "id": "733bde25.f189a",
+        "type": "debug",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "tweet.text",
+        "targetType": "msg",
+        "x": 480,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "850efcfe.ef763",
+        "type": "function",
+        "z": "9b214a6.d858bb8",
+        "name": "Store Tweet data",
+        "func": "// tweet object includes a timestamp_ms\nmsg.payload = { \"timestamp\" : msg.tweet.timestamp_ms ,\n                \"tweet\"     : msg.tweet.text,\n                \"sentiment\" : msg.sentiment.score};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 560,
+        "y": 520,
+        "wires": [
+            [
+                "54fccdbf.c0dd54"
+            ]
+        ]
+    },
+    {
+        "id": "fafede19.9c111",
+        "type": "delay",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 340,
+        "y": 520,
+        "wires": [
+            [
+                "940d0bd8.6620d8",
+                "4ec6b641.1be2e8",
+                "850efcfe.ef763"
+            ]
+        ]
+    },
+    {
+        "id": "940d0bd8.6620d8",
+        "type": "change",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "tweet.text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 560,
+        "wires": [
+            [
+                "60ee972c.7b55e8"
+            ]
+        ]
+    },
+    {
+        "id": "4ec6b641.1be2e8",
+        "type": "change",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "sentiment.score",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 600,
+        "wires": [
+            [
+                "1678fc45.bf0084",
+                "122882a6.21f18d"
+            ]
+        ]
+    },
+    {
+        "id": "e52c7c7f.ea2cb",
+        "type": "link out",
+        "z": "9b214a6.d858bb8",
+        "name": "listening",
+        "links": [
+            "76dd3d6d.308d84",
+            "886d9545.83fa98"
+        ],
+        "x": 775,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "fa6b0158.5d68c",
+        "type": "twitter in",
+        "z": "9b214a6.d858bb8",
+        "twitter": "",
+        "tags": "",
+        "user": "false",
+        "name": "",
+        "inputs": 1,
+        "x": 110,
+        "y": 120,
+        "wires": [
+            [
+                "7dfa270a.540738"
+            ]
+        ]
+    },
+    {
+        "id": "54fccdbf.c0dd54",
+        "type": "cloudant out",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "cloudant": "5ff82faa.6b506",
+        "database": "tweetdata",
+        "service": "_ext_",
+        "payonly": true,
+        "operation": "insert",
+        "x": 760,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "60ee972c.7b55e8",
+        "type": "ui_text",
+        "z": "9b214a6.d858bb8",
+        "group": "7c6f63dc.7f3b0c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 750,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "1678fc45.bf0084",
+        "type": "ui_chart",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "group": "7c6f63dc.7f3b0c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Tweet Sentiment History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-10",
+        "ymax": "10",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": true,
+        "outputs": 1,
+        "x": 750,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6b98c286.89d19c",
+        "type": "ui_text_input",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "label": "Input keyword(s) and press enter",
+        "tooltip": "",
+        "group": "48fd0526.158adc",
+        "order": 1,
+        "width": 25,
+        "height": 3,
+        "passthru": true,
+        "mode": "text",
+        "delay": "0",
+        "topic": "",
+        "x": 160,
+        "y": 60,
+        "wires": [
+            [
+                "fa6b0158.5d68c"
+            ]
+        ]
+    },
+    {
+        "id": "122882a6.21f18d",
+        "type": "ui_gauge",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "group": "5fe29c94.188f94",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Sentiment",
+        "label": "units",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": 10,
+        "colors": [
+            "#ff3b0a",
+            "#e6e600",
+            "#39f505"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 760,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "7dfa270a.540738",
+        "type": "switch",
+        "z": "9b214a6.d858bb8",
+        "name": "Setting location to India",
+        "property": "tweet.user.location",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "India",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 170,
+        "y": 180,
+        "wires": [
+            [
+                "e8869147.356e4",
+                "733bde25.f189a",
+                "890f1d46.4f75"
+            ]
+        ]
+    },
+    {
+        "id": "5df55a5b.6873b4",
+        "type": "mlsentiment",
+        "z": "9b214a6.d858bb8",
+        "name": "",
+        "property": "payload",
+        "lang": "",
+        "x": 350,
+        "y": 360,
+        "wires": [
+            [
+                "c365dbe0.209738",
+                "fafede19.9c111"
+            ]
+        ]
+    },
+    {
+        "id": "5ff82faa.6b506",
+        "type": "cloudant",
+        "z": "",
+        "host": "https://0ec45475-78c5-429f-8698-f8c52c6a309e-bluemix:3855089f85a77cb5d5be6297d31986537e2d8e9f3d584fd40f977fdccfe73ddc@0ec45475-78c5-429f-8698-f8c52c6a309e-bluemix.cloudantnosqldb.appdomain.cloud",
+        "name": ""
+    },
+    {
+        "id": "7c6f63dc.7f3b0c",
+        "type": "ui_group",
+        "z": "",
+        "name": "Tweet",
+        "tab": "72e8ddfa.f920e4",
+        "order": 1,
+        "disp": true,
+        "width": 10,
+        "collapse": false
+    },
+    {
+        "id": "48fd0526.158adc",
+        "type": "ui_group",
+        "z": "",
+        "name": "Input",
+        "tab": "85b0b74c.f502e8",
+        "order": 2,
+        "disp": true,
+        "width": 25,
+        "collapse": false
+    },
+    {
+        "id": "5fe29c94.188f94",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sentiment",
+        "tab": "72e8ddfa.f920e4",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "72e8ddfa.f920e4",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Tweet Dashboard",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "85b0b74c.f502e8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

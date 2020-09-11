@@ -1,0 +1,121 @@
+[
+    {
+        "id": "5c58b8f1.f22d18",
+        "type": "tab",
+        "label": "Welcome",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c79dd4d9.26f878",
+        "type": "inject",
+        "z": "5c58b8f1.f22d18",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 260,
+        "y": 200,
+        "wires": [
+            [
+                "fe357a7e.37ca38"
+            ]
+        ]
+    },
+    {
+        "id": "fe357a7e.37ca38",
+        "type": "ui_template",
+        "z": "5c58b8f1.f22d18",
+        "group": "15f4e33d.05813d",
+        "name": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<!DOCTYPE html>\n<html lang=\"\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <link href=\"https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap\" rel=\"stylesheet\">\n    <title>COVID 19 SENTIMENT ANALYSIS</title>\n</head>\n\n<body>\n    <header id='header'>\n        <div class=\"container\">\n            <h1>COVID-19 TWITTER SENTIMENT ANALYSIS VISUALISATION DASHBOARD</h1>\n            <br><br>\n            <h2>Enter search terms below</h2>\n        </div>\n    </header>\n        <div class=\"box\"></div>\n</body>\n</html>\n<style>\n    *{\n        margin: 0px;\n        padding: 0px;\n        box-sizing: border-box;\n        font-family: 'Balsamiq Sans', cursive;\n    }\n    \n    #header .container{\n        padding: 0px;\n        margin: 10px auto;\n    }\n    \n    #header h1{\n        text-align: center;\n        font-size: 2em;\n    }\n    \n     #header h2{\n        text-align: center;\n    }\n    \n    .box{\n        width: 800px;\n        height: 600px;\n        padding: 0px 20px 20px 20px;\n        margin: 100px auto;\n        margin-top: 20px;\n        box-shadow: 0px 0px 10px 2px grey;\n        background-image: url(https://images.unsplash.com/photo-1579869847557-1f67382cc158?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);\n        background-size: cover;\n    }\n    \n    \n    \n    \n    \n</style>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 460,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6000ef49.a0b94",
+        "type": "inject",
+        "z": "5c58b8f1.f22d18",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 290,
+        "y": 360,
+        "wires": [
+            [
+                "808eb58c.9ef048"
+            ]
+        ]
+    },
+    {
+        "id": "808eb58c.9ef048",
+        "type": "ui_template",
+        "z": "5c58b8f1.f22d18",
+        "group": "48fd0526.158adc",
+        "name": "",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<html>\n    <head>\n        <style>\n            body a{\n                color: white;\n                text-align: center;\n                font-size: 1.2rem;\n            }\n        </style>\n    </head>\n    <body>\n        <a href=\"/project\">Back to Main Page</a>\n    </body>\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 500,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "15f4e33d.05813d",
+        "type": "ui_group",
+        "z": "",
+        "name": "Picture",
+        "tab": "85b0b74c.f502e8",
+        "order": 1,
+        "disp": false,
+        "width": "25",
+        "collapse": false
+    },
+    {
+        "id": "48fd0526.158adc",
+        "type": "ui_group",
+        "z": "",
+        "name": "Input",
+        "tab": "85b0b74c.f502e8",
+        "order": 2,
+        "disp": true,
+        "width": 25,
+        "collapse": false
+    },
+    {
+        "id": "85b0b74c.f502e8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
