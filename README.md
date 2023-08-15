@@ -3,18 +3,9 @@
 ## COVID-19 TWITTER SENTIMENT ANALYSIS VISUALISATION DASHBOARD
 ![intro](https://images.unsplash.com/photo-1552120476-9ee56c8611f7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
 
-## PROJECT DEMONSTRATION VIDEO AND REPORT
 Find **Video** here -> https://drive.google.com/drive/folders/17T-ytbKAgtg1z0wrf-MMXJC_bssDsEQD?usp=sharing
 
-Find detailed **Project Report** here -> https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/IBM%20HACK%20CHALLENGE%20PROJECT%20REPORT%20(1).pdf
-
-Find **Project PPT** here -> https://docs.google.com/presentation/d/1khU2b31zzD5HEGPFnvS4dBTM_QMKjtBnt1EkYxWK1SU/edit?usp=sharing
-
-## Introduction
-
-   Sentiment Analysis (Opinion Mining) is an extremely powerful tool for predictive modelling and analysis. Sentiment Analysis relies on advanced text mining techniques and then performs Natural Language Processing on the texts to predict the latent sentiment or opinion of the text in a given context like analysing movie reviews, restaurant ratings or in this case government response against the backdrop of the coronavirus pandemic.
-   
-## Features of our app
+## Features of the app
    1.It can translate tweet of any language including all Indian languages like Hindi, Marathi, Bengali, Gujarati, Tamil, Kannada etc and calculate corresponding sentiment score.</br>
    2.Tweets with sentiment score is live plotted on a map clearly indicating positive,negative and neutral.</br>
    3.Dynamic Charts and plots showing COVID-19 statistics from all countries across the  world.</br>
@@ -86,9 +77,7 @@ Create a MapBox account,and get the API tokens
  
  ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Screenshots/Chatbot.JPG)
  ### CHATBOT
- ## Conclusion
- This COVID-19 Twitter Sentiment Analysis Web Application can stream live tweets and update the sentiment score on a visualisation dashboard. All user locations along with sentiment score can be reflected on the map of India clearly indicating positive, negative and neutral tweets. It can also visualize images attached to tweets. Besides this, latest news from twitter is contantly updated in the news headlines page, and dynamic charts on the statistics page brings to the user the most recent trends and numbers relating to the pandemic.
- Tweets are also saved in a database for historical analysis. Future scope involves overcoming the twitter streaming API limitations.
+
 
 
 
@@ -104,7 +93,4 @@ Create a MapBox account,and get the API tokens
    **Landing Page**</br>
  ![](https://images.unsplash.com/photo-1480694313141-fce5e697ee25?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
  
- ## Team Members
- 1.Ahan Bose</br>
- 2.Vedica Rao</br>
- 3.Prithwijit Banerjee
+
