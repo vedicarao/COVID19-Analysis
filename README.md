@@ -1,5 +1,5 @@
 # Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard
-# IBMHACKCHALLENGE 2020
+
 ## COVID-19 TWITTER SENTIMENT ANALYSIS VISUALISATION DASHBOARD
 ![intro](https://images.unsplash.com/photo-1552120476-9ee56c8611f7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
 
