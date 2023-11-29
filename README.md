@@ -29,41 +29,10 @@ Setting up an IBM cloud account in and creating Node Red Cloud Foundry App. Crea
 
 Getting MapBox API Credentials
 Create a MapBox account,and get the API tokens
-
-## Procedure
-### Importing Flows
-1.Open Node-red Flow Editor.</br>
-2.Go to the top-right menu section and click on the import option.</br>
-3.Import the flows from the folder. After importing the flows, if certain nodes are not installed, install all required nodes from the manage palette of the menu section in node red flow editor.</br>
-4.Put your corresponding credentials in the Visual Recognition API node, MapBox Access Token node,the Twitter node,the Postgrestor node and the Cloudant nodes.</br> 
-
-### User Interface
-   Copy the HTML code from the HTML/CSS folder in the repo(inline CSS)[use only on desktop]</br>
-     1.Landingpage.html</br>
-     2.News.html</br>
-     3.Stats.html</br>
- Copy the HTML code and paste the entire code in the corresponding template nodes in the Main Page flow.
- 
- ### Deploying
- 1.Once all the Flows have been imported,the API key values inserted in the respective access nodes,and the HTML codes copied into the template nodes.Click on the red deploy button on top right corner of the node red flow editor.</br> 
-</br>
-
  
  ![Landing Page](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/LandingPage.gif)
  
- 
- # Node-Red Flows
- 
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/HomePage.JPG)
- # Flow 2 - Tweet Dashboard
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/MainPage.JPG)
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/DashboardFlow.JPG)
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/LineGraph.JPG)
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/MapFlow.JPG)
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/ImageFlow.JPG)
- ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Flows_pics/PostgrestorFlow.JPG)
- 
- 
+
  # Preview
  
  ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Screenshots/dashboard.JPG)
@@ -77,20 +46,4 @@ Create a MapBox account,and get the API tokens
  
  ![](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/Screenshots/Chatbot.JPG)
  ### CHATBOT
-
-
-
-
- ### Images Used 
-   All Images have been taken from Unsplash(https://unsplash.com/)</br> 
-   **Visualisation Dashboard Home Page**</br>
-   ![](https://images.unsplash.com/photo-1579869847557-1f67382cc158?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
-   
-   **Statistics Page**</br>
- ![](https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=60)
-
-   
-   **Landing Page**</br>
- ![](https://images.unsplash.com/photo-1480694313141-fce5e697ee25?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
- 
 
