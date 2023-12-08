@@ -3,7 +3,7 @@
 ## COVID-19 TWITTER SENTIMENT ANALYSIS VISUALISATION DASHBOARD
 ![intro](https://images.unsplash.com/photo-1552120476-9ee56c8611f7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
 
-Find **Video** here -> https://drive.google.com/drive/folders/17T-ytbKAgtg1z0wrf-MMXJC_bssDsEQD?usp=sharing
+Find **Video** here -> https://drive.google.com/file/d/1YQd6-3n7dw1WJUM6Su51AcJYY626w_wK/view?usp=drive_link
 
 ## Features of the app
    1.It can translate tweet of any language including all Indian languages like Hindi, Marathi, Bengali, Gujarati, Tamil, Kannada etc and calculate corresponding sentiment score.</br>
