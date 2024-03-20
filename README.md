@@ -1,4 +1,6 @@
-## Sentiment Analysis of COVID-19 tweets 
+## CovidLens
+
+This app tracks COVID-19 trends and resources in India and globally. It analyzes tweets in real-time, translating them and gauging public sentiment. Live maps and charts display COVID-19 data and lockdown effects. Get the latest news and find nearby COVID-19 centers. Plus, a chatbot answers your COVID-19 questions.
 
  ![Landing Page](https://github.com/SmartPracticeschool/SBSPS-Challenge-4486-Sentiment-Analysis-of-COVID-19-Tweets-Visualisation-Dashboard./blob/master/LandingPage.gif)
 
